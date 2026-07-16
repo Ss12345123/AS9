@@ -1,0 +1,6 @@
+{
+  "name": "Gold AI Platform",
+  "description": "A premium black and gold institutional AI trading platform with live market data, TradingView charts, Smart Money Strategy analysis, economic news filters, and advanced trade signals.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
