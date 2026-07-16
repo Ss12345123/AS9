@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { 
   TrendingUp, Activity, BarChart3, Calendar, Bell, Sliders, Shield, 
-  Menu, X, LogOut, Loader2, DollarSign, Percent, AlertTriangle, Play, Cpu 
+  Menu, X, LogOut, Loader2, DollarSign, Percent, AlertTriangle, Play, Cpu, Zap
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -24,6 +24,7 @@ import NotificationsPanel from './components/NotificationsPanel';
 import CapitalConnection from './components/CapitalConnection';
 import SystemStatus from './components/SystemStatus';
 import SMCBacktest from './components/SMCBacktest';
+import ScalpingModule from './components/ScalpingModule';
 
 // Maps the terminal's display symbols to Capital.com instrument epics.
 const SYMBOL_TO_EPIC: Record<string, string> = {
@@ -60,7 +61,7 @@ export default function App() {
     }
     return null;
   });
-  const [view, setView] = useState<'dashboard' | 'monitor' | 'charts' | 'news' | 'signals' | 'settings' | 'broker' | 'status' | 'backtest'>('dashboard');
+  const [view, setView] = useState<'dashboard' | 'monitor' | 'charts' | 'news' | 'signals' | 'settings' | 'broker' | 'status' | 'backtest' | 'scalping'>('dashboard');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // App settings — hydrated from localStorage so preferences persist across reloads.
@@ -1353,6 +1354,26 @@ export default function App() {
               </motion.div>
             )}
 
+            {view === 'scalping' && (
+              <motion.div
+                key="scalping"
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -5 }}
+                transition={{ duration: 0.15 }}
+              >
+                <ScalpingModule
+                  profile={profile!}
+                  activeSignals={activeSignals}
+                  onPlaceBrokerOrder={handlePlaceBrokerOrder}
+                  capitalConnected={capitalConnected}
+                  onPlaySound={playAlertSound}
+                  syncCapitalPortfolio={syncCapitalPortfolio}
+                  addNotification={addNotification}
+                />
+              </motion.div>
+            )}
+
             {view === 'settings' && (
               <motion.div
                 key="settings"
@@ -1433,6 +1454,7 @@ export default function App() {
             { id: 'charts', label: 'SMC Chart', icon: TrendingUp },
             { id: 'news', label: 'Calendar', icon: Calendar },
             { id: 'signals', label: 'Signals', icon: Play, badge: activeSignals.length },
+            { id: 'scalping', label: 'Scalp', icon: Zap },
             { id: 'backtest', label: 'Backtest', icon: Cpu },
             { id: 'broker', label: 'Broker', icon: Shield },
             { id: 'settings', label: 'Setup', icon: Sliders }

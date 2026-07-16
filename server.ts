@@ -9,6 +9,7 @@ import config from "./src/config";
 import authRouter from "./src/routes/auth";
 import capitalRouter from "./src/routes/capital-com";
 import adminRouter from "./src/routes/admin";
+import scalpingRouter from "./src/routes/scalping";
 import * as capitalcom from "./src/lib/capitalcom";
 import { runWalkForwardSimulation, generateHistoricalCandles, evaluateStrategy } from "./src/lib/quantitativeStrategy";
 import { 
@@ -55,6 +56,7 @@ app.use(express.json());
 app.use(authRouter);
 app.use(capitalRouter);
 app.use(adminRouter);
+app.use(scalpingRouter);
 
 // System diagnostics tracking states
 let totalApiRequests = 0;
